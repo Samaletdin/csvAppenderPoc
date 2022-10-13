@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import classNames from 'classnames'
 
 // Import dropzone and file list components:
@@ -20,6 +20,8 @@ export const App = React.memo(() => {
   const onFilesDrop = React.useCallback((files: File[]) => {
     setFiles(files)
   }, [])
+
+  const [updatedCsvFile, setUpdatedCsvFile] = useState(null); //add files here
 
   return (
     <div

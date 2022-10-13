@@ -1,5 +1,5 @@
 import React from 'react'
-import parseCsv from './function/HandleCsvFile'
+import ParseCsv from './function/HandleCsvFile'
 
 // Define interface for component props/api:
 export interface DropZoneProps {
@@ -33,20 +33,20 @@ export const DropZone = React.memo(
                 return;
             }
 
-            const array: string[] = []
+            const array: File[] = []
             console.log(files)
 
             for (let i = 0; i < files.length; i++) {
                 if (files.item(i) !== null && files.item(i)?.name.match(/.\.csv$/)) { //wonky AF but works. add this to the onDrag method instead
-                    const content: string = parseCsv(files.item(i))
-                    if (content !== null && content) {
-                        array.push(content)
-                    }
+                    const content = ParseCsv(files.item(i)).then((updatedString) => {
+                        if (updatedString !== null && updatedString) {
+                            array.push(updatedString);
+                        }
+                    })
                 }
             }
 
-            const newfile: File = files.item(0)!
-            return [newfile];
+            return array;
         }
 
         // Create handler for dragenter event:

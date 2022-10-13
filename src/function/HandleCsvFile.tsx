@@ -1,10 +1,12 @@
-import React, { useCallback } from "react";
+import { useState } from "react";
 import addIcebreakerToArray from './AddIcebreakerToArray'
 
 
-export default function parseCsv(file: File | null) {
+
+export default async function ParseCsv(file: File | null) {
+    const [updatedCsv, setUpdatedCsv] = useState(new File([], ""));
     if (file === null) {
-        return "only for compiling";
+        throw Error("we done goofed!");
     }
 
     if (!file.name.match(/.\.csv$/)) {
@@ -12,6 +14,7 @@ export default function parseCsv(file: File | null) {
     }
 
     const reader = new FileReader();
+
     reader.addEventListener('load', function (e) {
 
         let csvdata: string = e.target!.result! as string;
@@ -21,14 +24,14 @@ export default function parseCsv(file: File | null) {
         for (let i = 0; i < arrayWithIcebreaker.length; i++) {
             stringifiedData = stringifiedData + arrayWithIcebreaker[i] + "\n";
         }
-        console.log(stringifiedData)
-        return stringifiedData; //setState here instead? maybe a boolean for if it's loaded or not and a string for the csv content? use properties?
+        console.log(stringifiedData);
+        const blob = new Blob([stringifiedData], { type: 'text/csv' });
+        const newFile = new File([blob], "output.csv", { type: 'text/csv' })
+        setUpdatedCsv(newFile);
+        return newFile; //setState here instead? maybe a boolean for if it's loaded or not and a string for the csv content? use properties?
     });
     reader.readAsBinaryString(file);
-    // const parsed: string = useCallback(() => {
-    //     Papa.parse(file, { complete: (result) => console.dir(result.data) }) 
-    // }
-    return "only for compiling"
+    return updatedCsv; //parse into file here!
 }
 
 function getParsecsvdata(data: string) {
