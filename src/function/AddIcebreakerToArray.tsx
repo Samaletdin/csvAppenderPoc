@@ -8,7 +8,6 @@ export default function addIcebreakerToArray(array: string[]) {
         array[i] = array[i].replaceAll(/\r/g, "") + ",\"Hello, blabla\",\"Hi there, blabla\",\"Olá, blabla\"";
     }
 
-    console.log(array);
     return array;
 }
 
