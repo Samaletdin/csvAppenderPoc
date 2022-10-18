@@ -14,33 +14,40 @@ interface DownloadedFileInfo {
     readonly url: string | undefined;
 }
 
-export const useDownloadFile = ({
+export const useDownloadBlob = ({
     preDownloading,
     postDownloading,
     onError,
     getFileName,
-}: DownloadFileProps, file: Blob): DownloadedFileInfo => {
+}: DownloadFileProps, blob: Blob): DownloadedFileInfo => {
     const ref = useRef<HTMLAnchorElement | null>(null);
     const [url, setFileUrl] = useState<string>();
     const [name, setFileName] = useState<string>();
 
     const download = async () => {
         try {
-            console.log("pre-download! " + file.size);
+            console.log("pre-download! " + blob.size);
+            let link = document.createElement("a");
+            if (link.download !== undefined) { // feature detection
+                // Browsers that support HTML5 download attribute
+                let url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", "filename");
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
 
-            preDownloading();
-            const url = URL.createObjectURL(file);
-            console.log(url);
 
-            setFileUrl(url);
-            setFileName(getFileName());
-            ref.current?.click();
-            postDownloading();
-            URL.revokeObjectURL(url);
         } catch (error) {
+            console.log(error);
             onError();
         }
     };
 
     return { download, ref, url, name };
 };
+
+
+

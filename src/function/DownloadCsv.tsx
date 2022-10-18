@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { useDownloadFile } from "../component/DownloadFileProps";
+import { useDownloadBlob } from "../component/DownloadFileProps";
 import { Button, ButtonState } from "../component/ButtonState";
 import { Alert, Container } from "react-bootstrap";
 
@@ -28,7 +28,7 @@ export const DownloadCsv: React.FC<{ updatedCsvFile: Blob, fileName: string }> =
         return "remember_to_set_name_sample-file.csv";
     };
 
-    const { ref, url, download, name } = useDownloadFile({
+    const { ref, url, download, name } = useDownloadBlob({
         preDownloading,
         postDownloading,
         onError: onErrorDownloadFile,

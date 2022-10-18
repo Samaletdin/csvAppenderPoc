@@ -29,7 +29,7 @@ export const DropZone = React.memo(
         const [isDragActive, setIsDragActive] = React.useState(false)
         // Prepare ref for dropzone element:
         const dropZoneRef = React.useRef<null | HTMLDivElement>(null)
-        const [updatedCsv, setUpdatedCsv] = useState(new File([], ""));
+        const [updatedCsv, setUpdatedCsv] = useState(new Blob([]));
         const [downloadUrl, setDownloadUrl] = useState("");
 
         // Create helper method to map file list to array of files:
@@ -77,11 +77,11 @@ export const DropZone = React.memo(
                 // console.log(stringifiedData);
                 const blob = new Blob([stringifiedData], { type: 'text/csv' });
                 const newFile = new File([blob], "output.csv", { type: 'text/csv' })
-                setUpdatedCsv(newFile);
+                setUpdatedCsv(blob);
                 return newFile; //setState here instead? maybe a boolean for if it's loaded or not and a string for the csv content? use properties?
             });
             reader.readAsBinaryString(file);
-            return updatedCsv; //parse into file here!
+            return new File([updatedCsv], "output.csv", { type: 'text/csv' }); //parse into file here!
         }
 
 
