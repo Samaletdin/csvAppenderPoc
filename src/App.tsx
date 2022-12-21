@@ -4,6 +4,7 @@ import classNames from 'classnames'
 // Import dropzone and file list components:
 import { DropZone } from './Dropzone'
 import { FileList } from './Filelist'
+import { CsvUploadTab } from './component/UploadButton'
 
 export const App = React.memo(() => {
   // Create "active" state for dropzone:
@@ -30,18 +31,8 @@ export const App = React.memo(() => {
       })}
     >
       {/* Render the dropzone */}
-      <DropZone onDragStateChange={onDragStateChange} onFilesDrop={onFilesDrop}>
-        <h2>Drop your files here</h2>
-
-        {files.length === 0 ? (
-          <h3>No files to upload</h3>
-        ) : (
-          <h3>Files to upload: {files.length}</h3>
-        )}
-
-        {/* Render the file list */}
-        <FileList files={files} />
-      </DropZone>
+      
+      <CsvUploadTab></CsvUploadTab>
     </div>
   )
 })
